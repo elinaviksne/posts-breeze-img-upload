@@ -10,12 +10,13 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="text-gray-900 dark:text-gray-100">
                     <div class="post-form">
-                        <form action="{{ route('posts.store') }}" method="post">
+                        <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-4">
                                 <label for="title">Title</label>
-                                <input type="text" name="title" id="title" class="@error('title') border-red-500 @enderror" value="{{ old('title') }}">
+                                <input type="text" name="title" id="title"
+                                    class="@error('title') border-red-500 @enderror" value="{{ old('title') }}">
 
                                 @error('title')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -31,7 +32,8 @@
                             </div>
                             <div class="mt-4">
                                 <div class="mt-1">
-                                    <input type="file" name="image" id="image" accept="image/*" class="hidden" onchange="updateFileName()">
+                                    <input type="file" name="image" id="image" accept="image/*" class="hidden"
+                                        onchange="updateFileName()">
                                     <label for="image" class="rounded-md border px-3 py-1 cursor-pointer">
                                         Choose Image
                                     </label>
@@ -41,7 +43,7 @@
 
                             <button type="submit" class="button">Create</button>
                         </form>
-                        
+
                         <script>
                             function updateFileName() {
                                 const input = document.getElementById('image');

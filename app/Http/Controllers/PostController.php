@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -35,15 +36,18 @@ class PostController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $post = new Post();
-        $post->title = $request->title;
-        $post->content = $request->content;
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images', 'public');
         }
 
-        $post->save();
+        $data = [
+            'title' => $request->title,
+            'content' => $request->content,
+            'image_path' => $path
+        ];
+
+        Post::create($data);
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
@@ -75,7 +79,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(Post $post)
     {
         $post->delete();
         if ($post->image_path) {
