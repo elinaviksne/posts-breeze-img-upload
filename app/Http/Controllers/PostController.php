@@ -37,17 +37,17 @@ class PostController extends Controller
         ]);
 
 
+        $post = new Post();
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->user_id = auth()->id();
+
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images', 'public');
+            $post->image_path = $path;
         }
 
-        $data = [
-            'title' => $request->title,
-            'content' => $request->content,
-            'image_path' => $path
-        ];
-
-        Post::create($data);
+        $post->save();
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
